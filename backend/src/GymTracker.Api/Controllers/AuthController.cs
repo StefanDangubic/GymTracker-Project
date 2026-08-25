@@ -1,4 +1,4 @@
-using System.Security.Claims;
+using GymTracker.Api.Common;
 using GymTracker.Application.Auth;
 using GymTracker.Application.Auth.Dtos;
 using GymTracker.Infrastructure.Security;
@@ -52,8 +52,7 @@ public class AuthController : ControllerBase
     [HttpGet("me")]
     public async Task<ActionResult<AuthUserResponseDto>> Me(CancellationToken cancellationToken)
     {
-        var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-        var user = await _authService.GetCurrentUserAsync(userId, cancellationToken);
+        var user = await _authService.GetCurrentUserAsync(User.GetUserId(), cancellationToken);
         return Ok(user);
     }
 
