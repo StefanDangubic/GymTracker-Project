@@ -1,0 +1,59 @@
+# ==============================
+# Task PDF — never commit
+# ==============================
+docs/WeDo Software-Zadatak.pdf
+
+# ==============================
+# .NET / ASP.NET Core
+# ==============================
+[Bb]in/
+[Oo]bj/
+*.user
+*.suo
+.vs/
+*.dbmlschema
+*.pubxml
+*.pubxml.user
+launchSettings.json.bak
+
+# ==============================
+# Visual Studio / VS Code
+# ==============================
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.swp
+
+# ==============================
+# Angular / Node
+# ==============================
+node_modules/
+dist/
+tmp/
+out-tsc/
+.angular/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm/
+
+# ==============================
+# Secrets / environment / configuration
+# ==============================
+.env
+.env.*
+*.env
+appsettings.*.local.json
+secrets.json
+frontend/src/environments/environment.secrets.ts
+
+# ==============================
+# User-specific / local dev files
+# ==============================
+*.log
+.DS_Store
+Thumbs.db
+*.local
+
+# Claude Code instructions
+CLAUDE.md

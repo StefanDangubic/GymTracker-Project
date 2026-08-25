@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{EFCD1AE1-97FA-467F-9078-A544973EE887}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GymTracker.Domain", "src\GymTracker.Domain\GymTracker.Domain.csproj", "{F89906F3-4616-4B89-82E4-6097EE4CCAC0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GymTracker.Application", "src\GymTracker.Application\GymTracker.Application.csproj", "{A275DEE4-EEBD-42A0-A829-47CAE4D96162}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GymTracker.Infrastructure", "src\GymTracker.Infrastructure\GymTracker.Infrastructure.csproj", "{21CAD2F0-B040-4F10-B3C7-2B35CD673326}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GymTracker.Api", "src\GymTracker.Api\GymTracker.Api.csproj", "{129C0FF2-9121-4046-AAEF-8326A1A4409B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{D1A3CBF4-4162-438C-827C-18414D387465}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GymTracker.Application.Tests", "tests\GymTracker.Application.Tests\GymTracker.Application.Tests.csproj", "{056D1AAF-C269-4102-A995-450DC843D1C6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F89906F3-4616-4B89-82E4-6097EE4CCAC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F89906F3-4616-4B89-82E4-6097EE4CCAC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F89906F3-4616-4B89-82E4-6097EE4CCAC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F89906F3-4616-4B89-82E4-6097EE4CCAC0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A275DEE4-EEBD-42A0-A829-47CAE4D96162}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A275DEE4-EEBD-42A0-A829-47CAE4D96162}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A275DEE4-EEBD-42A0-A829-47CAE4D96162}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A275DEE4-EEBD-42A0-A829-47CAE4D96162}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21CAD2F0-B040-4F10-B3C7-2B35CD673326}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21CAD2F0-B040-4F10-B3C7-2B35CD673326}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21CAD2F0-B040-4F10-B3C7-2B35CD673326}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21CAD2F0-B040-4F10-B3C7-2B35CD673326}.Release|Any CPU.Build.0 = Release|Any CPU
+		{129C0FF2-9121-4046-AAEF-8326A1A4409B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{129C0FF2-9121-4046-AAEF-8326A1A4409B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{129C0FF2-9121-4046-AAEF-8326A1A4409B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{129C0FF2-9121-4046-AAEF-8326A1A4409B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{056D1AAF-C269-4102-A995-450DC843D1C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{056D1AAF-C269-4102-A995-450DC843D1C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{056D1AAF-C269-4102-A995-450DC843D1C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{056D1AAF-C269-4102-A995-450DC843D1C6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F89906F3-4616-4B89-82E4-6097EE4CCAC0} = {EFCD1AE1-97FA-467F-9078-A544973EE887}
+		{A275DEE4-EEBD-42A0-A829-47CAE4D96162} = {EFCD1AE1-97FA-467F-9078-A544973EE887}
+		{21CAD2F0-B040-4F10-B3C7-2B35CD673326} = {EFCD1AE1-97FA-467F-9078-A544973EE887}
+		{129C0FF2-9121-4046-AAEF-8326A1A4409B} = {EFCD1AE1-97FA-467F-9078-A544973EE887}
+		{056D1AAF-C269-4102-A995-450DC843D1C6} = {D1A3CBF4-4162-438C-827C-18414D387465}
+	EndGlobalSection
+EndGlobal
