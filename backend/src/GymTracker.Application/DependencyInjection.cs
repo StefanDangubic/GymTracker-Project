@@ -1,4 +1,5 @@
 using GymTracker.Application.Auth;
+using GymTracker.Application.Progress;
 using GymTracker.Application.Workouts;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,6 +11,7 @@ public static class DependencyInjection
     {
         services.AddScoped<AuthService>();
         services.AddScoped<WorkoutService>();
+        services.AddScoped<ProgressService>();
 
         return services;
     }
