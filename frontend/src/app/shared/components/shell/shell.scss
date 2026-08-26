@@ -7,7 +7,7 @@
 .shell-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 1.5rem;
   padding: 1rem 1.5rem;
   background: var(--color-surface);
   border-bottom: 1px solid var(--color-border);
@@ -37,6 +37,27 @@
   font-size: 1.05rem;
 }
 
+.shell-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex: 1;
+}
+
+.shell-nav-link {
+  padding: 0.45rem 0.75rem;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.shell-nav-link.is-active {
+  color: var(--color-primary);
+  background: var(--color-bg);
+}
+
 .shell-user {
   display: flex;
   align-items: center;
@@ -50,15 +71,29 @@
 
 .shell-main {
   flex: 1;
-  padding: 2rem 1.5rem;
+  width: 100%;
+  max-width: 1080px;
+  margin-inline: auto;
+  padding: 2.5rem 2rem 3rem;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 640px) {
   .shell-header {
+    flex-wrap: wrap;
     padding: 0.85rem 1rem;
+    row-gap: 0.65rem;
+  }
+
+  .shell-nav {
+    order: 3;
+    flex: 0 0 100%;
   }
 
   .shell-user-name {
     display: none;
+  }
+
+  .shell-main {
+    padding: 1.75rem 1.25rem 2.5rem;
   }
 }

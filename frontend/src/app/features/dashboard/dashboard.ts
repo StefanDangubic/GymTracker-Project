@@ -10,4 +10,13 @@ import { AuthService } from '../../core/auth/auth.service';
 export class Dashboard {
   private readonly authService = inject(AuthService);
   readonly user = this.authService.user;
+
+  initials(fullName: string): string {
+    return fullName
+      .split(' ')
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((part) => part[0]?.toUpperCase())
+      .join('');
+  }
 }

@@ -1,0 +1,139 @@
+<form class="card workout-form" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+  <div class="workout-form-header">
+    <h2 class="workout-form-title">{{ workout() ? 'Edit workout' : 'Add workout' }}</h2>
+    <span class="workout-form-mode" [class.is-edit]="workout()">
+      {{ workout() ? 'Editing' : 'New' }}
+    </span>
+  </div>
+
+  @if (errorMessage()) {
+    <p class="alert alert-error" role="alert">{{ errorMessage() }}</p>
+  }
+
+  <div class="workout-form-grid">
+    <div class="field">
+      <label class="field-label" for="workoutType">Workout type</label>
+      <select id="workoutType" class="field-input" formControlName="workoutType">
+        @for (type of workoutTypes; track type) {
+          <option [value]="type">{{ type }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="field">
+      <label class="field-label" for="workoutDateUtc">Date &amp; time</label>
+      <input
+        id="workoutDateUtc"
+        type="datetime-local"
+        class="field-input"
+        [class.is-invalid]="form.controls.workoutDateUtc.invalid && form.controls.workoutDateUtc.touched"
+        formControlName="workoutDateUtc"
+      />
+      @if (form.controls.workoutDateUtc.invalid && form.controls.workoutDateUtc.touched) {
+        <span class="field-error">Date and time are required.</span>
+      }
+    </div>
+
+    <div class="field">
+      <label class="field-label" for="durationMinutes">Duration (minutes)</label>
+      <input
+        id="durationMinutes"
+        type="number"
+        min="1"
+        class="field-input"
+        [class.is-invalid]="
+          form.controls.durationMinutes.invalid && form.controls.durationMinutes.touched
+        "
+        formControlName="durationMinutes"
+      />
+      @if (form.controls.durationMinutes.invalid && form.controls.durationMinutes.touched) {
+        <span class="field-error">
+          @if (form.controls.durationMinutes.hasError('required')) {
+            Duration is required.
+          } @else if (form.controls.durationMinutes.hasError('min')) {
+            Duration must be at least 1 minute.
+          }
+        </span>
+      }
+    </div>
+
+    <div class="field">
+      <label class="field-label" for="caloriesBurned">
+        Calories burned <span class="field-hint">(optional)</span>
+      </label>
+      <input
+        id="caloriesBurned"
+        type="number"
+        min="0"
+        class="field-input"
+        [class.is-invalid]="
+          form.controls.caloriesBurned.invalid && form.controls.caloriesBurned.touched
+        "
+        formControlName="caloriesBurned"
+      />
+      @if (form.controls.caloriesBurned.invalid && form.controls.caloriesBurned.touched) {
+        <span class="field-error">Calories can't be negative.</span>
+      }
+    </div>
+
+    <div class="field">
+      <label class="field-label" for="intensityLevel">Intensity (1-10)</label>
+      <input
+        id="intensityLevel"
+        type="number"
+        min="1"
+        max="10"
+        class="field-input"
+        [class.is-invalid]="
+          form.controls.intensityLevel.invalid && form.controls.intensityLevel.touched
+        "
+        formControlName="intensityLevel"
+      />
+      @if (form.controls.intensityLevel.invalid && form.controls.intensityLevel.touched) {
+        <span class="field-error">Enter a value between 1 and 10.</span>
+      }
+    </div>
+
+    <div class="field">
+      <label class="field-label" for="fatigueLevel">Fatigue (1-10)</label>
+      <input
+        id="fatigueLevel"
+        type="number"
+        min="1"
+        max="10"
+        class="field-input"
+        [class.is-invalid]="
+          form.controls.fatigueLevel.invalid && form.controls.fatigueLevel.touched
+        "
+        formControlName="fatigueLevel"
+      />
+      @if (form.controls.fatigueLevel.invalid && form.controls.fatigueLevel.touched) {
+        <span class="field-error">Enter a value between 1 and 10.</span>
+      }
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="field-label" for="notes">Notes <span class="field-hint">(optional)</span></label>
+    <textarea
+      id="notes"
+      class="field-input"
+      rows="3"
+      maxlength="1000"
+      [class.is-invalid]="form.controls.notes.invalid && form.controls.notes.touched"
+      formControlName="notes"
+    ></textarea>
+    @if (form.controls.notes.invalid && form.controls.notes.touched) {
+      <span class="field-error">Notes can't be longer than 1000 characters.</span>
+    }
+  </div>
+
+  <div class="workout-form-actions">
+    <button type="button" class="btn btn-secondary" (click)="onCancel()" [disabled]="submitting()">
+      Cancel
+    </button>
+    <button type="submit" class="btn btn-primary" [disabled]="submitting()">
+      {{ submitting() ? 'Saving…' : workout() ? 'Save changes' : 'Add workout' }}
+    </button>
+  </div>
+</form>

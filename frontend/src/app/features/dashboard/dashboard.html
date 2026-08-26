@@ -1,9 +1,21 @@
-<section class="dashboard-welcome card">
+<section class="page-header">
+  <h1 class="page-title">Dashboard</h1>
+  <p class="page-subtitle">Your GymTracker overview.</p>
+</section>
+
+<div class="dashboard-welcome card">
   @if (user(); as currentUser) {
-    <h1 class="dashboard-title">Welcome back, {{ currentUser.fullName }}</h1>
+    <div class="dashboard-welcome-header">
+      <span class="dashboard-avatar" aria-hidden="true">{{ initials(currentUser.fullName) }}</span>
+      <div>
+        <h2 class="dashboard-greeting">Welcome back, {{ currentUser.fullName }}</h2>
+        <p class="dashboard-email">{{ currentUser.email }}</p>
+      </div>
+    </div>
   }
+
   <p class="dashboard-subtitle">
     This is your GymTracker home base. Workout logging and progress reports will show up here
     next.
   </p>
-</section>
+</div>

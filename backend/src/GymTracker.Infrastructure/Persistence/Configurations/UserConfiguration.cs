@@ -1,11 +1,19 @@
 using GymTracker.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GymTracker.Infrastructure.Persistence.Configurations;
 
 public class UserConfiguration : IEntityTypeConfiguration<User>
 {
+    // See WorkoutConfiguration for why this converter is needed: SQL Server's datetime2
+    // has no Kind concept, so EF Core reads DateTime back as Unspecified, which then
+    // serializes without the "Z" suffix and gets misread as local time by clients.
+    private static readonly ValueConverter<DateTime, DateTime> UtcDateTimeConverter = new(
+        v => v,
+        v => DateTime.SpecifyKind(v, DateTimeKind.Utc));
+
     public void Configure(EntityTypeBuilder<User> builder)
     {
         builder.ToTable("Users");
@@ -28,6 +36,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.Property(u => u.CreatedAtUtc)
             .IsRequired()
-            .HasDefaultValueSql("SYSUTCDATETIME()");
+            .HasDefaultValueSql("SYSUTCDATETIME()")
+            .HasConversion(UtcDateTimeConverter);
     }
 }

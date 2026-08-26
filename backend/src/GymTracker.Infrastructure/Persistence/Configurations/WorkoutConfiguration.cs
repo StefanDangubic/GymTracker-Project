@@ -1,11 +1,25 @@
 using GymTracker.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GymTracker.Infrastructure.Persistence.Configurations;
 
 public class WorkoutConfiguration : IEntityTypeConfiguration<Workout>
 {
+    // SQL Server's datetime2 has no timezone/Kind concept, so EF Core reads every
+    // DateTime back as Kind=Unspecified regardless of what was written. Without this,
+    // System.Text.Json omits the "Z" suffix on read (but not on the in-memory value
+    // returned right after a write), so POST/PUT and GET responses for the same
+    // instant serialize inconsistently and get misread as local time by clients.
+    private static readonly ValueConverter<DateTime, DateTime> UtcDateTimeConverter = new(
+        v => v,
+        v => DateTime.SpecifyKind(v, DateTimeKind.Utc));
+
+    private static readonly ValueConverter<DateTime?, DateTime?> UtcNullableDateTimeConverter = new(
+        v => v,
+        v => v.HasValue ? DateTime.SpecifyKind(v.Value, DateTimeKind.Utc) : v);
+
     public void Configure(EntityTypeBuilder<Workout> builder)
     {
         builder.ToTable("Workouts", t =>
@@ -38,11 +52,16 @@ public class WorkoutConfiguration : IEntityTypeConfiguration<Workout>
             .HasMaxLength(1000);
 
         builder.Property(w => w.WorkoutDateUtc)
-            .IsRequired();
+            .IsRequired()
+            .HasConversion(UtcDateTimeConverter);
 
         builder.Property(w => w.CreatedAtUtc)
             .IsRequired()
-            .HasDefaultValueSql("SYSUTCDATETIME()");
+            .HasDefaultValueSql("SYSUTCDATETIME()")
+            .HasConversion(UtcDateTimeConverter);
+
+        builder.Property(w => w.UpdatedAtUtc)
+            .HasConversion(UtcNullableDateTimeConverter);
 
         builder.HasOne(w => w.User)
             .WithMany(u => u.Workouts)

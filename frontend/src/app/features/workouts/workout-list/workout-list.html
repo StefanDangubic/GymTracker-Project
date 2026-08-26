@@ -1,0 +1,94 @@
+<section class="workouts-page">
+  <div class="workouts-header">
+    <div class="page-header">
+      <h1 class="page-title">Workouts</h1>
+      <p class="page-subtitle">Log and review your training sessions.</p>
+    </div>
+    @if (!isFormOpen()) {
+      <button type="button" class="btn btn-primary" (click)="openCreateForm()">
+        Add workout
+      </button>
+    }
+  </div>
+
+  @if (isFormOpen()) {
+    <app-workout-form
+      [workout]="editingWorkout()"
+      (saved)="onSaved()"
+      (cancelled)="closeForm()"
+    />
+  }
+
+  @if (deleteError()) {
+    <p class="alert alert-error" role="alert">{{ deleteError() }}</p>
+  }
+
+  @if (loading()) {
+    <div class="state-panel card">
+      <p class="state-title">Loading your workouts…</p>
+    </div>
+  } @else if (errorMessage()) {
+    <div class="state-panel card">
+      <span class="state-icon" aria-hidden="true"></span>
+      <p class="state-title">Unable to load workouts</p>
+      <p class="alert alert-error" role="alert">{{ errorMessage() }}</p>
+      <button type="button" class="btn btn-secondary" (click)="loadWorkouts()">Try again</button>
+    </div>
+  } @else if (workouts().length === 0) {
+    <div class="state-panel card">
+      <span class="state-icon" aria-hidden="true"></span>
+      <p class="state-title">No workouts logged yet</p>
+      <p class="state-hint">Add your first workout to start tracking your progress.</p>
+    </div>
+  } @else {
+    <ul class="workout-list">
+      @for (workout of workouts(); track workout.id) {
+        <li class="workout-card card">
+          <div class="workout-card-main">
+            <span class="workout-type-badge" [attr.data-type]="workout.workoutType">
+              {{ workout.workoutType }}
+            </span>
+            <span class="workout-date">{{ formatDate(workout.workoutDateUtc) }}</span>
+          </div>
+
+          <div class="workout-card-stats">
+            <div class="workout-stat">
+              <span class="workout-stat-label">Duration</span>
+              <span class="workout-stat-value">{{ workout.durationMinutes }} min</span>
+            </div>
+            <div class="workout-stat">
+              <span class="workout-stat-label">Calories</span>
+              <span class="workout-stat-value">{{ workout.caloriesBurned ?? '—' }}</span>
+            </div>
+            <div class="workout-stat">
+              <span class="workout-stat-label">Intensity</span>
+              <span class="workout-stat-value">{{ workout.intensityLevel }}/10</span>
+            </div>
+            <div class="workout-stat">
+              <span class="workout-stat-label">Fatigue</span>
+              <span class="workout-stat-value">{{ workout.fatigueLevel }}/10</span>
+            </div>
+          </div>
+
+          @if (workout.notes) {
+            <p class="workout-notes">{{ workout.notes }}</p>
+          }
+
+          <div class="workout-card-actions">
+            <button type="button" class="btn btn-secondary" (click)="openEditForm(workout)">
+              Edit
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              [disabled]="deletingId() === workout.id"
+              (click)="deleteWorkout(workout)"
+            >
+              {{ deletingId() === workout.id ? 'Deleting…' : 'Delete' }}
+            </button>
+          </div>
+        </li>
+      }
+    </ul>
+  }
+</section>

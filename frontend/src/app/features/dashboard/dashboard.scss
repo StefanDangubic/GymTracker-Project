@@ -1,17 +1,46 @@
 .dashboard-welcome {
-  max-width: 640px;
+  max-width: 720px;
   padding: 2rem;
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
+  gap: 1.25rem;
 }
 
-.dashboard-title {
-  font-size: 1.4rem;
+.dashboard-welcome-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.dashboard-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  flex-shrink: 0;
+  border-radius: 999px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  color: var(--color-primary);
   font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.dashboard-greeting {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.dashboard-email {
+  color: var(--color-text-muted);
+  font-size: 0.88rem;
+  margin-top: 0.15rem;
 }
 
 .dashboard-subtitle {
   color: var(--color-text-muted);
   font-size: 0.95rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--color-border);
 }
