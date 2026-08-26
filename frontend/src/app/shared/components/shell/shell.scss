@@ -1,0 +1,64 @@
+.shell {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.shell-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.shell-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.shell-brand-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--radius-sm);
+  background: var(--color-primary);
+  color: var(--color-primary-contrast);
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.shell-brand-name {
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.shell-user {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.shell-user-name {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+
+.shell-main {
+  flex: 1;
+  padding: 2rem 1.5rem;
+}
+
+@media (max-width: 480px) {
+  .shell-header {
+    padding: 0.85rem 1rem;
+  }
+
+  .shell-user-name {
+    display: none;
+  }
+}

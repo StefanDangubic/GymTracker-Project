@@ -1,0 +1,9 @@
+<section class="dashboard-welcome card">
+  @if (user(); as currentUser) {
+    <h1 class="dashboard-title">Welcome back, {{ currentUser.fullName }}</h1>
+  }
+  <p class="dashboard-subtitle">
+    This is your GymTracker home base. Workout logging and progress reports will show up here
+    next.
+  </p>
+</section>

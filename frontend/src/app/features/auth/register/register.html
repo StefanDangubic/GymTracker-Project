@@ -1,0 +1,85 @@
+<div class="auth-page">
+  <div class="auth-card card">
+    <div class="auth-brand">
+      <span class="auth-brand-mark">GT</span>
+      <span class="auth-brand-name">GymTracker</span>
+    </div>
+
+    <div class="auth-header">
+      <h1 class="auth-title">Create your account</h1>
+      <p class="auth-subtitle">Start logging your workouts in a couple of minutes.</p>
+    </div>
+
+    @if (errorMessage()) {
+      <p class="alert alert-error" role="alert">{{ errorMessage() }}</p>
+    }
+
+    <form class="auth-form" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+      <div class="field">
+        <label class="field-label" for="fullName">Full name</label>
+        <input
+          id="fullName"
+          type="text"
+          class="field-input"
+          [class.is-invalid]="form.controls.fullName.invalid && form.controls.fullName.touched"
+          formControlName="fullName"
+          autocomplete="name"
+          placeholder="Jane Doe"
+        />
+        @if (form.controls.fullName.invalid && form.controls.fullName.touched) {
+          <span class="field-error">Full name is required.</span>
+        }
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          class="field-input"
+          [class.is-invalid]="form.controls.email.invalid && form.controls.email.touched"
+          formControlName="email"
+          autocomplete="email"
+          placeholder="you@example.com"
+        />
+        @if (form.controls.email.invalid && form.controls.email.touched) {
+          <span class="field-error">
+            @if (form.controls.email.hasError('required')) {
+              Email is required.
+            } @else if (form.controls.email.hasError('email')) {
+              Enter a valid email address.
+            }
+          </span>
+        }
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="password">Password</label>
+        <input
+          id="password"
+          type="password"
+          class="field-input"
+          [class.is-invalid]="form.controls.password.invalid && form.controls.password.touched"
+          formControlName="password"
+          autocomplete="new-password"
+          placeholder="At least 6 characters"
+        />
+        @if (form.controls.password.invalid && form.controls.password.touched) {
+          <span class="field-error">
+            @if (form.controls.password.hasError('required')) {
+              Password is required.
+            } @else if (form.controls.password.hasError('minlength')) {
+              Password must be at least 6 characters.
+            }
+          </span>
+        }
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block" [disabled]="submitting()">
+        {{ submitting() ? 'Creating account…' : 'Create account' }}
+      </button>
+    </form>
+
+    <p class="auth-footer">Already have an account? <a routerLink="/login">Sign in</a></p>
+  </div>
+</div>
