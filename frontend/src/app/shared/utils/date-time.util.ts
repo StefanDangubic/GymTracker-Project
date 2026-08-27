@@ -15,3 +15,9 @@ export function formatWorkoutDateTime(isoUtc: string): string {
   const pad = (n: number) => n.toString().padStart(2, '0');
   return `${pad(date.getUTCDate())}.${pad(date.getUTCMonth() + 1)}.${date.getUTCFullYear()} ${pad(date.getUTCHours())}:${pad(date.getUTCMinutes())}`;
 }
+
+
+export function formatDate(isoDate: string): string {
+  const [year, month, day] = isoDate.slice(0, 10).split('-');
+  return `${day}.${month}.${year}`;
+}

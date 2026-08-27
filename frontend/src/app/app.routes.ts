@@ -27,6 +27,10 @@ export const routes: Routes = [
         path: 'workouts',
         loadComponent: () =>
           import('./features/workouts/workout-list/workout-list').then((m) => m.WorkoutList)
+      },
+      {
+        path: 'progress',
+        loadComponent: () => import('./features/progress/progress').then((m) => m.Progress)
       }
     ]
   },

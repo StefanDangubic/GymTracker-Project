@@ -1,0 +1,92 @@
+<section class="progress-page">
+  <div class="page-header">
+    <h1 class="page-title">Progress</h1>
+    <p class="page-subtitle">Review your weekly training volume for a given month.</p>
+  </div>
+
+  <form class="card progress-filters" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+    <div class="field">
+      <label class="field-label" for="month">Month</label>
+      <select id="month" class="field-input" formControlName="month">
+        @for (m of months; track m.value) {
+          <option [value]="m.value">{{ m.name }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="field">
+      <label class="field-label" for="year">Year</label>
+      <input
+        id="year"
+        type="number"
+        min="2000"
+        max="2100"
+        class="field-input"
+        [class.is-invalid]="form.controls.year.invalid && form.controls.year.touched"
+        formControlName="year"
+      />
+      @if (form.controls.year.invalid && form.controls.year.touched) {
+        <span class="field-error">Enter a year between 2000 and 2100.</span>
+      }
+    </div>
+
+    <button type="submit" class="btn btn-primary">View progress</button>
+  </form>
+
+  @if (loading()) {
+    <div class="state-panel card">
+      <p class="state-title">Loading progress…</p>
+    </div>
+  } @else if (errorMessage()) {
+    <div class="state-panel card">
+      <span class="state-icon" aria-hidden="true"></span>
+      <p class="state-title">Unable to load progress</p>
+      <p class="alert alert-error" role="alert">{{ errorMessage() }}</p>
+      <button type="button" class="btn btn-secondary" (click)="loadProgress()">Try again</button>
+    </div>
+  } @else if (progress(); as monthProgress) {
+    @if (monthProgress.weeks.length === 0) {
+      <div class="state-panel card">
+        <span class="state-icon" aria-hidden="true"></span>
+        <p class="state-title">No data for this month</p>
+        <p class="state-hint">There are no weeks to display for the selected month.</p>
+      </div>
+    } @else {
+      <ul class="week-list">
+        @for (week of monthProgress.weeks; track week.weekNumber) {
+          <li class="week-card card">
+            <div class="week-card-main">
+              <span class="week-label">Week {{ week.weekNumber }}</span>
+              <span class="week-range">
+                {{ formatDate(week.weekStartDateUtc) }} – {{ formatDate(week.weekEndDateUtc) }}
+              </span>
+            </div>
+
+            @if (week.workoutCount === 0) {
+              <p class="week-empty">No workouts logged this week.</p>
+            } @else {
+              <div class="week-card-stats">
+                <div class="week-stat">
+                  <span class="week-stat-label">Workouts</span>
+                  <span class="week-stat-value">{{ week.workoutCount }}</span>
+                </div>
+                <div class="week-stat">
+                  <span class="week-stat-label">Total duration</span>
+                  <span class="week-stat-value">{{ week.totalDurationMinutes }} min</span>
+                </div>
+                <div class="week-stat">
+                  <span class="week-stat-label">Avg. intensity</span>
+                  <span class="week-stat-value">{{ week.averageIntensityLevel ?? '—' }}/10</span>
+                </div>
+                <div class="week-stat">
+                  <span class="week-stat-label">Avg. fatigue</span>
+                  <span class="week-stat-value">{{ week.averageFatigueLevel ?? '—' }}/10</span>
+                </div>
+              </div>
+            }
+          </li>
+        }
+      </ul>
+    }
+  }
+</section>
