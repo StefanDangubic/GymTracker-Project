@@ -8,7 +8,7 @@
     <div class="field">
       <label class="field-label" for="month">Month</label>
       <select id="month" class="field-input" formControlName="month">
-        @for (m of months; track m.value) {
+        @for (m of availableMonths(); track m.value) {
           <option [value]="m.value">{{ m.name }}</option>
         }
       </select>
@@ -20,13 +20,13 @@
         id="year"
         type="number"
         min="2000"
-        max="2100"
+        [max]="currentYear"
         class="field-input"
         [class.is-invalid]="form.controls.year.invalid && form.controls.year.touched"
         formControlName="year"
       />
       @if (form.controls.year.invalid && form.controls.year.touched) {
-        <span class="field-error">Enter a year between 2000 and 2100.</span>
+        <span class="field-error">Enter a year between 2000 and {{ currentYear }}.</span>
       }
     </div>
 
@@ -52,11 +52,15 @@
         <p class="state-hint">There are no weeks to display for the selected month.</p>
       </div>
     } @else {
+      <h2 class="progress-result-title">
+        {{ monthName(monthProgress.month) }} {{ monthProgress.year }}
+      </h2>
+
       <ul class="week-list">
-        @for (week of monthProgress.weeks; track week.weekNumber) {
-          <li class="week-card card">
+        @for (week of monthProgress.weeks; track week.weekNumber; let i = $index) {
+          <li class="week-card card" [class.has-workouts]="week.workoutCount > 0">
             <div class="week-card-main">
-              <span class="week-label">Week {{ week.weekNumber }}</span>
+              <span class="week-label">Week {{ i + 1 }}</span>
               <span class="week-range">
                 {{ formatDate(week.weekStartDateUtc) }} – {{ formatDate(week.weekEndDateUtc) }}
               </span>
@@ -71,15 +75,15 @@
                   <span class="week-stat-value">{{ week.workoutCount }}</span>
                 </div>
                 <div class="week-stat">
-                  <span class="week-stat-label">Total duration</span>
+                  <span class="week-stat-label">Duration</span>
                   <span class="week-stat-value">{{ week.totalDurationMinutes }} min</span>
                 </div>
                 <div class="week-stat">
-                  <span class="week-stat-label">Avg. intensity</span>
+                  <span class="week-stat-label">Avg Intensity</span>
                   <span class="week-stat-value">{{ week.averageIntensityLevel ?? '—' }}/10</span>
                 </div>
                 <div class="week-stat">
-                  <span class="week-stat-label">Avg. fatigue</span>
+                  <span class="week-stat-label">Avg Fatigue</span>
                   <span class="week-stat-value">{{ week.averageFatigueLevel ?? '—' }}/10</span>
                 </div>
               </div>

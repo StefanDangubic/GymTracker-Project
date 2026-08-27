@@ -1,5 +1,11 @@
 import { Component, effect, inject, input, output, signal } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  ReactiveFormsModule,
+  ValidationErrors,
+  Validators
+} from '@angular/forms';
 import { Workout, WORKOUT_TYPES, WorkoutType } from '../../../shared/models/workout.model';
 import {
   fromDateTimeLocalInputValue,
@@ -7,6 +13,17 @@ import {
 } from '../../../shared/utils/date-time.util';
 import { extractErrorMessage } from '../../../shared/utils/extract-error-message';
 import { WorkoutService } from '../workout.service';
+
+// GymTracker records completed workouts, not planned ones - mirrors the backend's
+// WorkoutService.EnsureNotFutureDate check so the user sees the problem before submitting.
+function notFutureDateValidator(control: AbstractControl): ValidationErrors | null {
+  if (!control.value) {
+    return null;
+  }
+
+  const workoutDate = new Date(fromDateTimeLocalInputValue(control.value));
+  return workoutDate.getTime() > Date.now() ? { futureDate: true } : null;
+}
 
 @Component({
   selector: 'app-workout-form',
@@ -28,7 +45,7 @@ export class WorkoutForm {
 
   readonly form = this.fb.nonNullable.group({
     workoutType: this.fb.nonNullable.control<WorkoutType>('Cardio', [Validators.required]),
-    workoutDateUtc: ['', [Validators.required]],
+    workoutDateUtc: ['', [Validators.required, notFutureDateValidator]],
     durationMinutes: [30, [Validators.required, Validators.min(1)]],
     caloriesBurned: this.fb.control<number | null>(null, [Validators.min(0)]),
     intensityLevel: [5, [Validators.required, Validators.min(1), Validators.max(10)]],

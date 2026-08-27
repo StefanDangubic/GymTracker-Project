@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, inject, signal } from '@angular/core';
+import { Component, HostListener, inject, signal } from '@angular/core';
 import { Workout } from '../../../shared/models/workout.model';
 import { formatWorkoutDateTime } from '../../../shared/utils/date-time.util';
 import { extractErrorMessage } from '../../../shared/utils/extract-error-message';
@@ -62,6 +62,13 @@ export class WorkoutList {
   closeForm(): void {
     this.isFormOpen.set(false);
     this.editingWorkout.set(null);
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscapeKey(): void {
+    if (this.isFormOpen()) {
+      this.closeForm();
+    }
   }
 
   onSaved(): void {

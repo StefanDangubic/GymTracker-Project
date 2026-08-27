@@ -22,6 +22,15 @@ public class WorkoutRepository : IWorkoutRepository
             .OrderByDescending(w => w.WorkoutDateUtc)
             .ToListAsync(cancellationToken);
 
+    public Task<List<Workout>> GetByUserIdAndDateRangeAsync(
+        int userId, DateTime startDateUtc, DateTime endDateUtc, CancellationToken cancellationToken = default) =>
+        _context.Workouts
+            .Where(w => w.UserId == userId
+                        && w.WorkoutDateUtc.Date >= startDateUtc.Date
+                        && w.WorkoutDateUtc.Date <= endDateUtc.Date)
+            .OrderByDescending(w => w.WorkoutDateUtc)
+            .ToListAsync(cancellationToken);
+
     public async Task AddAsync(Workout workout, CancellationToken cancellationToken = default)
     {
         _context.Workouts.Add(workout);

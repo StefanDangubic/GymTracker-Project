@@ -5,12 +5,19 @@
 }
 
 .shell-header {
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: 0 1px 3px rgba(16, 20, 30, 0.05);
+}
+
+.shell-header-inner {
   display: flex;
   align-items: center;
   gap: 1.5rem;
-  padding: 1rem 1.5rem;
-  background: var(--color-surface);
-  border-bottom: 1px solid var(--color-border);
+  width: 100%;
+  max-width: 1100px;
+  margin-inline: auto;
+  padding: 1rem 2rem;
 }
 
 .shell-brand {
@@ -72,15 +79,15 @@
 .shell-main {
   flex: 1;
   width: 100%;
-  max-width: 1080px;
+  max-width: 1100px;
   margin-inline: auto;
   padding: 2.5rem 2rem 3rem;
 }
 
 @media (max-width: 640px) {
-  .shell-header {
+  .shell-header-inner {
     flex-wrap: wrap;
-    padding: 0.85rem 1rem;
+    padding: 0.85rem 1.25rem;
     row-gap: 0.65rem;
   }
 

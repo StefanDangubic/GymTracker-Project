@@ -31,16 +31,22 @@ public class WorkoutService
     public async Task<WorkoutResponseDto> CreateAsync(
         int userId, CreateWorkoutDto dto, CancellationToken cancellationToken = default)
     {
+        // WorkoutType/WorkoutDateUtc are nullable on the DTO purely so [Required] can reject
+        // an omitted value; [ApiController]'s automatic model validation guarantees both are
+        // populated by the time the action - and therefore this service - runs.
+        var workoutDateUtc = dto.WorkoutDateUtc!.Value;
+        EnsureNotFutureDate(workoutDateUtc);
+
         var workout = new Workout
         {
             UserId = userId,
-            WorkoutType = dto.WorkoutType,
+            WorkoutType = dto.WorkoutType!.Value,
             DurationMinutes = dto.DurationMinutes,
             CaloriesBurned = dto.CaloriesBurned,
             IntensityLevel = dto.IntensityLevel,
             FatigueLevel = dto.FatigueLevel,
             Notes = dto.Notes,
-            WorkoutDateUtc = dto.WorkoutDateUtc,
+            WorkoutDateUtc = workoutDateUtc,
             CreatedAtUtc = DateTime.UtcNow
         };
 
@@ -51,15 +57,18 @@ public class WorkoutService
     public async Task<WorkoutResponseDto> UpdateAsync(
         int workoutId, int userId, UpdateWorkoutDto dto, CancellationToken cancellationToken = default)
     {
+        var workoutDateUtc = dto.WorkoutDateUtc!.Value;
+        EnsureNotFutureDate(workoutDateUtc);
+
         var workout = await GetOwnedWorkoutAsync(workoutId, userId, cancellationToken);
 
-        workout.WorkoutType = dto.WorkoutType;
+        workout.WorkoutType = dto.WorkoutType!.Value;
         workout.DurationMinutes = dto.DurationMinutes;
         workout.CaloriesBurned = dto.CaloriesBurned;
         workout.IntensityLevel = dto.IntensityLevel;
         workout.FatigueLevel = dto.FatigueLevel;
         workout.Notes = dto.Notes;
-        workout.WorkoutDateUtc = dto.WorkoutDateUtc;
+        workout.WorkoutDateUtc = workoutDateUtc;
         workout.UpdatedAtUtc = DateTime.UtcNow;
 
         await _workoutRepository.UpdateAsync(workout, cancellationToken);
@@ -86,5 +95,16 @@ public class WorkoutService
         }
 
         return workout;
+    }
+
+    // GymTracker records completed workouts, not planned ones: a workout dated in the
+    // future is rejected here so invalid data is never persisted (enforced server-side,
+    // independent of any client-side check).
+    private static void EnsureNotFutureDate(DateTime workoutDateUtc)
+    {
+        if (workoutDateUtc > DateTime.UtcNow)
+        {
+            throw new BadRequestException("Workout date cannot be in the future.");
+        }
     }
 }

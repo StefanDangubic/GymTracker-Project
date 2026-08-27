@@ -22,10 +22,8 @@ public class ProgressService
         var monthStart = new DateTime(year, month, 1, 0, 0, 0, DateTimeKind.Utc);
         var monthEnd = monthStart.AddMonths(1).AddDays(-1);
 
-        var workouts = await _workoutRepository.GetByUserIdAsync(userId, cancellationToken);
-        var monthWorkouts = workouts
-            .Where(w => w.WorkoutDateUtc.Date >= monthStart && w.WorkoutDateUtc.Date <= monthEnd)
-            .ToList();
+        var monthWorkouts = await _workoutRepository.GetByUserIdAndDateRangeAsync(
+            userId, monthStart, monthEnd, cancellationToken);
 
         var weekKeys = new List<(int IsoYear, int IsoWeek)>();
         for (var day = monthStart; day <= monthEnd; day = day.AddDays(1))
@@ -39,7 +37,11 @@ public class ProgressService
 
         var weeks = weekKeys.Select(key =>
         {
-            var weekStart = ISOWeek.ToDateTime(key.IsoYear, key.IsoWeek, DayOfWeek.Monday);
+            // ISOWeek.ToDateTime returns DateTimeKind.Unspecified, which System.Text.Json
+            // serializes without a trailing "Z" - explicitly mark it Utc so week boundaries
+            // serialize consistently with every other UTC timestamp in the API.
+            var weekStart = DateTime.SpecifyKind(
+                ISOWeek.ToDateTime(key.IsoYear, key.IsoWeek, DayOfWeek.Monday), DateTimeKind.Utc);
             var weekWorkouts = monthWorkouts
                 .Where(w => ISOWeek.GetYear(w.WorkoutDateUtc) == key.IsoYear
                             && ISOWeek.GetWeekOfYear(w.WorkoutDateUtc) == key.IsoWeek)

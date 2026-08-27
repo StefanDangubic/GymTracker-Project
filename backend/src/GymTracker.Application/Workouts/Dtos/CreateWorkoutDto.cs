@@ -6,7 +6,7 @@ namespace GymTracker.Application.Workouts.Dtos;
 public class CreateWorkoutDto
 {
     [Required]
-    public WorkoutType WorkoutType { get; set; }
+    public WorkoutType? WorkoutType { get; set; }
 
     [Range(1, int.MaxValue)]
     public int DurationMinutes { get; set; }
@@ -24,5 +24,5 @@ public class CreateWorkoutDto
     public string? Notes { get; set; }
 
     [Required]
-    public DateTime WorkoutDateUtc { get; set; }
+    public DateTime? WorkoutDateUtc { get; set; }
 }

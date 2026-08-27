@@ -1,21 +1,23 @@
 <div class="shell">
   <header class="shell-header">
-    <div class="shell-brand">
-      <span class="shell-brand-mark">GT</span>
-      <span class="shell-brand-name">GymTracker</span>
-    </div>
+    <div class="shell-header-inner">
+      <div class="shell-brand">
+        <span class="shell-brand-mark">GT</span>
+        <span class="shell-brand-name">GymTracker</span>
+      </div>
 
-    <nav class="shell-nav">
-      <a class="shell-nav-link" routerLink="/dashboard" routerLinkActive="is-active">Dashboard</a>
-      <a class="shell-nav-link" routerLink="/workouts" routerLinkActive="is-active">Workouts</a>
-      <a class="shell-nav-link" routerLink="/progress" routerLinkActive="is-active">Progress</a>
-    </nav>
+      <nav class="shell-nav">
+        <a class="shell-nav-link" routerLink="/dashboard" routerLinkActive="is-active">Dashboard</a>
+        <a class="shell-nav-link" routerLink="/workouts" routerLinkActive="is-active">Workouts</a>
+        <a class="shell-nav-link" routerLink="/progress" routerLinkActive="is-active">Progress</a>
+      </nav>
 
-    <div class="shell-user">
-      @if (user(); as currentUser) {
-        <span class="shell-user-name">{{ currentUser.fullName }}</span>
-      }
-      <button type="button" class="btn btn-secondary" (click)="logout()">Logout</button>
+      <div class="shell-user">
+        @if (user(); as currentUser) {
+          <span class="shell-user-name">{{ currentUser.fullName }}</span>
+        }
+        <button type="button" class="btn btn-secondary" (click)="logout()">Logout</button>
+      </div>
     </div>
   </header>
 

@@ -3,19 +3,63 @@
   <p class="page-subtitle">Your GymTracker overview.</p>
 </section>
 
-<div class="dashboard-welcome card">
-  @if (user(); as currentUser) {
-    <div class="dashboard-welcome-header">
-      <span class="dashboard-avatar" aria-hidden="true">{{ initials(currentUser.fullName) }}</span>
-      <div>
-        <h2 class="dashboard-greeting">Welcome back, {{ currentUser.fullName }}</h2>
-        <p class="dashboard-email">{{ currentUser.email }}</p>
+<div class="dashboard-page">
+  <div class="dashboard-hero card">
+    @if (user(); as currentUser) {
+      <div class="dashboard-hero-header">
+        <span class="dashboard-avatar" aria-hidden="true">{{ initials(currentUser.fullName) }}</span>
+        <div>
+          <h2 class="dashboard-greeting">Welcome back, {{ currentUser.fullName }}</h2>
+          <p class="dashboard-email">{{ currentUser.email }}</p>
+        </div>
       </div>
-    </div>
-  }
+    }
 
-  <p class="dashboard-subtitle">
-    This is your GymTracker home base. Workout logging and progress reports will show up here
-    next.
-  </p>
+    <div class="dashboard-hero-footer">
+      <p class="dashboard-period">This Month · {{ currentPeriodLabel }}</p>
+      <a class="btn btn-primary" routerLink="/workouts">+ Log Workout</a>
+    </div>
+  </div>
+
+  <div class="dashboard-kpis">
+    <div class="kpi-card card">
+      <span class="kpi-label">Workouts This Month</span>
+      <span class="kpi-value">{{ workoutCountThisMonth() }}</span>
+    </div>
+    <div class="kpi-card card">
+      <span class="kpi-label">Active Time This Month</span>
+      <span class="kpi-value">{{ formattedDurationThisMonth() }}</span>
+    </div>
+    <div class="kpi-card card">
+      <span class="kpi-label">Calories Burned This Month</span>
+      <span class="kpi-value">{{ caloriesThisMonth() }} kcal</span>
+    </div>
+  </div>
+
+  <div class="dashboard-recent card">
+    <div class="dashboard-recent-header">
+      <h2 class="dashboard-recent-title">Recent Activity</h2>
+      <a class="dashboard-recent-link" routerLink="/workouts">View all</a>
+    </div>
+
+    @if (loading()) {
+      <p class="dashboard-recent-empty">Loading…</p>
+    } @else if (recentWorkouts().length === 0) {
+      <p class="dashboard-recent-empty">
+        No workouts logged yet — add your first session to see it here.
+      </p>
+    } @else {
+      <ul class="dashboard-recent-list">
+        @for (workout of recentWorkouts(); track workout.id) {
+          <li class="dashboard-recent-item">
+            <span class="workout-type-badge" [attr.data-type]="workout.workoutType">
+              {{ workout.workoutType }}
+            </span>
+            <span class="dashboard-recent-date">{{ formatDate(workout.workoutDateUtc) }}</span>
+            <span class="dashboard-recent-duration">{{ workout.durationMinutes }} min</span>
+          </li>
+        }
+      </ul>
+    }
+  </div>
 </div>

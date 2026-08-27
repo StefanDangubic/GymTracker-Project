@@ -12,11 +12,15 @@
   </div>
 
   @if (isFormOpen()) {
-    <app-workout-form
-      [workout]="editingWorkout()"
-      (saved)="onSaved()"
-      (cancelled)="closeForm()"
-    />
+    <div class="modal-backdrop">
+      <div class="modal-dialog" role="dialog" aria-modal="true">
+        <app-workout-form
+          [workout]="editingWorkout()"
+          (saved)="onSaved()"
+          (cancelled)="closeForm()"
+        />
+      </div>
+    </div>
   }
 
   @if (deleteError()) {

@@ -35,6 +35,35 @@
   color: #1d4ed8;
 }
 
+.workout-form-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-shrink: 0;
+}
+
+.workout-form-close {
+  appearance: none;
+  border: none;
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0.1rem 0.45rem;
+  border-radius: var(--radius-sm);
+}
+
+.workout-form-close:hover:not(:disabled) {
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+.workout-form-close:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
 .workout-form-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MonthlyProgress } from '../../shared/models/progress.model';
 import { formatDate } from '../../shared/utils/date-time.util';
@@ -31,23 +31,48 @@ export class Progress {
   private readonly progressService = inject(ProgressService);
   private readonly now = new Date();
 
+  readonly currentYear = this.now.getFullYear();
+  private readonly currentMonth = this.now.getMonth() + 1;
+
   readonly months = MONTH_NAMES.map((name, index) => ({ value: index + 1, name }));
   readonly formatDate = formatDate;
 
   readonly form = this.fb.nonNullable.group({
-    year: this.fb.nonNullable.control(this.now.getFullYear(), [
+    year: this.fb.nonNullable.control(this.currentYear, [
       Validators.required,
       Validators.min(2000),
-      Validators.max(2100)
+      Validators.max(this.currentYear)
     ]),
-    month: this.fb.nonNullable.control(this.now.getMonth() + 1, [Validators.required])
+    month: this.fb.nonNullable.control(this.currentMonth, [Validators.required])
+  });
+
+  // Selecting a future year is blocked by the Max validator above; selecting a future
+  // month within the current year is blocked harder, by simply not offering those
+  // options in the dropdown (avoidable at the source rather than validated after the fact).
+  private readonly selectedYear = signal(this.currentYear);
+  readonly availableMonths = computed(() => {
+    const maxMonth = this.selectedYear() === this.currentYear ? this.currentMonth : 12;
+    return this.months.filter((m) => m.value <= maxMonth);
   });
 
   readonly progress = signal<MonthlyProgress | null>(null);
   readonly loading = signal(true);
   readonly errorMessage = signal<string | null>(null);
 
+  monthName(monthNumber: number): string {
+    return MONTH_NAMES[monthNumber - 1];
+  }
+
   constructor() {
+    this.form.controls.year.valueChanges.subscribe((year) => {
+      this.selectedYear.set(year);
+
+      const maxMonth = year === this.currentYear ? this.currentMonth : 12;
+      if (this.form.controls.month.value > maxMonth) {
+        this.form.controls.month.setValue(maxMonth);
+      }
+    });
+
     this.loadProgress();
   }
 

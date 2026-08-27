@@ -1,9 +1,20 @@
 <form class="card workout-form" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
   <div class="workout-form-header">
     <h2 class="workout-form-title">{{ workout() ? 'Edit workout' : 'Add workout' }}</h2>
-    <span class="workout-form-mode" [class.is-edit]="workout()">
-      {{ workout() ? 'Editing' : 'New' }}
-    </span>
+    <div class="workout-form-header-actions">
+      <span class="workout-form-mode" [class.is-edit]="workout()">
+        {{ workout() ? 'Editing' : 'New' }}
+      </span>
+      <button
+        type="button"
+        class="workout-form-close"
+        (click)="onCancel()"
+        [disabled]="submitting()"
+        aria-label="Close"
+      >
+        ×
+      </button>
+    </div>
   </div>
 
   @if (errorMessage()) {
@@ -30,7 +41,13 @@
         formControlName="workoutDateUtc"
       />
       @if (form.controls.workoutDateUtc.invalid && form.controls.workoutDateUtc.touched) {
-        <span class="field-error">Date and time are required.</span>
+        <span class="field-error">
+          @if (form.controls.workoutDateUtc.hasError('required')) {
+            Date and time are required.
+          } @else if (form.controls.workoutDateUtc.hasError('futureDate')) {
+            Workout date can't be in the future.
+          }
+        </span>
       }
     </div>
 
